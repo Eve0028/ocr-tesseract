@@ -1,6 +1,6 @@
-# OCR App (Python, pytesseract)
+# Windows OCR App (Python, pytesseract)
 
-This is a small desktop OCR application implemented in Python using
+This is a small Windows (desktop) OCR application implemented in Python using
 Tkinter, Pillow and pytesseract. The app opens an image file, runs Tesseract
 OCR and displays the recognized text. The user can choose OCR language
 between English and Polish.
