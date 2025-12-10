@@ -1,0 +1,8 @@
+Pillow
+pytesseract
+pyinstaller
+pyperclip
+scikit-learn
+spacy
+nltk
+stop-words
