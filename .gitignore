@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+*.whl
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+venv.bak/
+
+# Tesseract bundle / bundled artifacts
+/tesseract_bundle/
+tesseract_bundle/
+
+# PyInstaller, spec files
+*.spec
+ocr_app.spec
+
+# PowerShell scripts
+*.ps1
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs, databases, caches, coverage
+*.log
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Images and binaries
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.bmp
+
+# Python bytecode and build artifacts
+*.pyc
+*.pyo
+*.pyd
+
+# Other common ignores
+dist/
+egg-info/
+pip-log.txt
