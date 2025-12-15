@@ -1,7 +1,7 @@
 # Windows OCR App (Python, pytesseract)
 
 This is a small Windows (desktop) OCR application implemented in Python using
-Tkinter, Pillow and pytesseract. The app opens an image file, runs Tesseract
+Kivy, Pillow and pytesseract. The app opens an image file, runs Tesseract
 OCR and displays the recognized text. The user can choose OCR language
 between English and Polish.
 
@@ -9,7 +9,7 @@ Prerequisites
 - Install Tesseract for Windows (UB‑Mannheim builds). Make sure the Tesseract
   executables and traineddata for the languages you need (eng, pol) are installed.
   UB‑Mannheim Windows builds: https://github.com/UB-Mannheim/tesseract/wiki
-- Python 3.8+ and pip.
+ - Python 3.8+ and pip.
 
 Install dependencies
 
@@ -23,26 +23,59 @@ Run
 python ocr_app.py
 ```
 
-Image preprocessing (GUI options)
---------------------------------
+## Image preprocessing (GUI options)
 
-The application includes simple image preprocessing controls in the top bar to
-improve OCR quality before running Tesseract:
+The application provides a set of preprocessing controls in the left panel that
+let you modify the image before OCR. These options are intended to improve
+recognition quality for different kinds of input (scans, photos, low-contrast
+prints, handwriting, etc.).
 
-- **Resize %** — scale the image (25%–200%). Increasing resolution can help with
-  small-font images; decreasing can help very large scans.
-- **Grayscale** — convert the image to grayscale (reduces color noise).
-- **Threshold** — apply a binary threshold (0–255). Enable the checkbox and
-  adjust the slider. Useful for high-contrast, scanned documents.
+Available preprocessing options
+- **Resize (%)** — scale the image (25%–200%). Use a larger percentage to
+  increase the effective resolution for small or low-resolution text (try 150%).
+  Reducing the size can help on very large images to reduce noise and speed up
+  processing.
+- **Grayscale** — convert the image to grayscale. This reduces color noise and
+  often improves OCR for printed documents.
+- **Threshold** — enable the checkbox to apply a binary threshold to the
+  grayscale image and use the **Threshold** slider (0–255) to control the
+  cutoff. Useful for high-contrast scans where text is darker than the
+  background.
+- **Brightness** — adjust image brightness (0.5–1.5). Increase for dark scans,
+  decrease for overexposed images.
+- **Contrast** — adjust image contrast (0.5–1.5). Increasing contrast may help
+  separate text from background noise.
+- **Rotate (°)** — rotate the image in degrees (−180 to 180). Use this when
+  the scan/photo is skewed or rotated.
+- **Sharpen** — enable/disable a small sharpen filter that is applied after
+  other preprocessing steps. Sharpening can improve OCR on slightly blurred
+  scans; disable if it increases noise on photographic images.
 
-The app also applies a small sharpen filter after preprocessing. If preprocessing
-fails for any reason the original image is used and a message is logged to stderr.
+Behavior notes
+- When an image is opened, the app runs OCR and shows the recognized text and a
+  preview of the original image.
+- The **Re-run OCR** button runs OCR on the original image using the current
+  set of preprocessing controls (it does not permanently modify the original
+  file). This lets you quickly try different combinations of settings without
+  changing the source file.
+- The **Reset** button restores all preprocessing controls to their default
+  values and reloads the original image preview and OCR result.
 
-Tips:
-- Try Resize = 150% + Grayscale for small printed text.
-- Use Threshold only when the document background is uniform.
+Implementation details
+- Preprocessing is implemented with Pillow (PIL). The pipeline applies resize,
+  optional grayscale/threshold, optional rotation, brightness and contrast
+  adjustments, and an optional sharpen filter.
+- If preprocessing fails for any reason the app falls back to the original
+  image and logs the error to stderr.
 
-Build a single EXE (optional)
+Tips
+- Try **Resize = 150%** + **Grayscale** for small printed text.
+- Use **Threshold** only when the document background is relatively uniform.
+
+![GUI](images/GUI.png)
+
+
+## Build a single EXE (optional)
 
 ```bash
 pyinstaller --onefile --windowed ocr_app.py
@@ -61,8 +94,7 @@ References
 - Tesseract (UB‑Mannheim builds): https://github.com/UB-Mannheim/tesseract/wiki
 - pytesseract: https://github.com/madmaze/pytesseract/tree/master
 
-Bundling Tesseract with the EXE (optional)
------------------------------------------
+## Bundling Tesseract with the EXE (optional)
 
 If you want to produce a single EXE that contains Tesseract (so it runs on a
 machine without Tesseract installed), copy the required Tesseract files into
@@ -102,8 +134,8 @@ Notes on the command:
 - Testing: Always test the generated EXE on a clean Windows VM to ensure it runs
   without a system Tesseract installed.
 Automatic bundling script
--------------------------
 
+-------------------------
 A helper script is provided to copy required Tesseract files into the project
 so you can build a standalone EXE without installing Tesseract on the target machine.
 
@@ -140,8 +172,7 @@ Notes:
 - The `tessdata` folder can be large. To reduce size, include only required languages.
 - Ensure all required DLLs are copied; missing DLLs will break the bundled executable.
 
-PowerShell and command-line notes
---------------------------------
+## PowerShell and command-line notes
 
 - The bundling script can also generate helper build scripts for different shells:
   - `--shell powershell` will produce a PowerShell-friendly pyinstaller command (uses backtick ` for line continuation).
@@ -154,14 +185,12 @@ PowerShell and command-line notes
 python scripts/bundle_tesseract.py --source "C:\Program Files\Tesseract-OCR" --dest tesseract_bundle --write-script build_tesseract_pwsh.ps1 --shell powershell
 ```
 
-Testing the bundled EXE
------------------------
+## Testing the bundled EXE
 
 - After building, test the EXE on a clean Windows machine (no Tesseract installed) to ensure all DLLs and `tessdata` were included correctly.
 - If the EXE fails to start, inspect the error and verify you included all DLLs from the Tesseract install folder (the script copies DLLs automatically). Tools like Dependency Walker can help identify missing native dependencies.
 
-Search images by OCR text
---------------------------------
+## Search images by OCR text
 
 This application includes a "Search Similar..." feature accessible from the top bar.
 It lets you search a folder of images for those whose recognized text is most similar to a

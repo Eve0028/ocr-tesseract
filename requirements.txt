@@ -6,3 +6,4 @@ scikit-learn
 spacy
 nltk
 stop-words
+kivy
