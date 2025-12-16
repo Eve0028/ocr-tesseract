@@ -49,11 +49,7 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
-# Images and binaries
-*.png
-*.jpg
-*.jpeg
-*.gif
+# Binaries
 *.ico
 *.bmp
 
